@@ -2,13 +2,15 @@ import React from 'react'
 import styled from 'styled-components';
 import posed from 'react-pose';
 
-const D = posed.div({
+const piecePose = ({
     pressable: true,
     init: { scale: 1 },
-    press: { scale: 0.9 }
+    press: { scale: 0.9 },
+    visible: { opacity: 1, scale: 1 },
+    hidden: { opacity: 0, scale: 0.6 }
 })
 
-const Piece = styled(D)`
+const Piece = styled(posed.div(piecePose))`
     display: flex;
     justify-content: center;
     align-items: center;
