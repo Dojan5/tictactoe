@@ -10,8 +10,10 @@ class App extends Component {
     this.state = {
       isVisible: false,
       Squares: Array(9).fill(null),
-      Finished: null,
-      Playing: null
+      gameOver: null,
+      isDraw: false,
+      CurrentPlayer: "Magenta",
+      WinningPlayer: null
     };
   }
 
@@ -28,7 +30,15 @@ class App extends Component {
         //Hacky fix because of React nonsense - you can't call method handlers on custom components
         <div className="stupidFuckingBox" onClick={() => this.handleClick(index)}
           key={index}>
-          <Square key={index}></Square>
+          <Square key={index}
+            color={square}>
+            {square === "Magenta" &&
+              <i class="fas fa-times"></i>
+            }
+            {square === "Orange" &&
+              <i class="far fa-circle"></i>
+            }
+          </Square>
         </div>
     )
   }
@@ -37,8 +47,7 @@ class App extends Component {
   resetGame() {
     this.setState({
       Squares: Array(9).fill(null),
-      Finished: null,
-      Playing: null
+      gameOver: null,
     })
   }
 
@@ -56,26 +65,51 @@ class App extends Component {
     ]
     //Run check function
     this.checkBoardForMatch(victoryConfiguration)
+    this.checkBoardForDraw();
+  }
+
+  checkBoardForDraw() {
+    var board = this.state.Squares;
+    for (var i = 0; i < board.length; i++) {
+      if (board[i] === null) {
+        return false;
+      }
+    }
+    if (this.state.WinningPlayer != null) {
+      return this.setState({ isDraw: true, gameOver: true })
+    }
   }
 
   checkBoardForMatch(victoryConfiguration) {
     //Enumerate through the possible victory configs
-    for (let index = 0; index < victoryConfiguration.length; index++) {
-      const [a, b, c] = victoryConfiguration[index];
-      let squares = this.state.Squares;
+    for (var i = 0; i < victoryConfiguration.length; i++) {
+      const [a, b, c] = victoryConfiguration[i];
+      var squares = this.state.Squares;
       //Checks if the current board is a match towards the current victory config
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        this.setState({ Finished: true })
+        this.setState({ gameOver: true, WinningPlayer: squares[a] })
       }
     }
   }
 
   handleClick(index) {
-    console.log("Ya clicked " + index);
+    if (!this.state.gameOver && this.state.CurrentPlayer) {
+      var UpdatedBoard = this.state.Squares;
+      //Only clickable if the current index doesn't hold a value, ya can't overwrite other people's pieces ya twerp
+      if (this.state.Squares[index] === null) {
+        //Have the player claim the square
+        UpdatedBoard[index] = this.state.CurrentPlayer;
+        this.setState({
+          Squares: UpdatedBoard,
+          CurrentPlayer: this.state.CurrentPlayer === "Magenta" ? "Orange" : "Magenta"
+        })
+        this.checkForVictor();
+      }
+    }
   }
 
   setPlayer(player) {
-    this.setState({ Playing: player })
+    this.setState({ CurrentPlayer: player })
   }
 
   render() {
