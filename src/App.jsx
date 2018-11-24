@@ -5,6 +5,8 @@ class App extends Component {
   constructor() {
     super();
 
+    this.handleClick = this.handleClick.bind(this);
+    this.renderBoard = this.renderBoard.bind(this);
     this.state = {
       isVisible: false,
       Squares: Array(9).fill(null),
@@ -23,7 +25,11 @@ class App extends Component {
   renderBoard() {
     return this.state.Squares.map(
       (square, index) =>
-        <Square key={index} onClick={() => this.handleClick(index)}>{square}</Square>
+        //Hacky fix because of React nonsense - you can't call method handlers on custom components
+        <div className="stupidFuckingBox" onClick={() => this.handleClick(index)}
+          key={index}>
+          <Square key={index}></Square>
+        </div>
     )
   }
 
@@ -65,7 +71,7 @@ class App extends Component {
   }
 
   handleClick(index) {
-    console.log("I clicked " + index);
+    console.log("Ya clicked " + index);
   }
 
   setPlayer(player) {

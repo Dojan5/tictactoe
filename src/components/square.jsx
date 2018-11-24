@@ -21,5 +21,5 @@ const Piece = styled(posed.div(piecePose))`
 `
 
 export const Square = (props) => (
-    <Piece>{props.children}</Piece>
+    <Piece color={props.color} >{props.children}</Piece>
 );
