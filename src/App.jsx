@@ -33,10 +33,10 @@ class App extends Component {
           <Square key={index}
             color={square}>
             {square === "Magenta" &&
-              <i class="fas fa-times"></i>
+              <i className="fas fa-times"></i>
             }
             {square === "Orange" &&
-              <i class="far fa-circle"></i>
+              <i className="far fa-circle"></i>
             }
           </Square>
         </div>
@@ -88,6 +88,7 @@ class App extends Component {
       //Checks if the current board is a match towards the current victory config
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
         this.setState({ gameOver: true, WinningPlayer: squares[a] })
+        this.fanfare.play();
       }
     }
   }
@@ -120,6 +121,9 @@ class App extends Component {
         <Board pose={isVisible ? 'visible' : 'hidden'}>
           {this.renderBoard()}
         </Board>
+        <audio ref={(fanfare) => { this.fanfare = fanfare }}>
+          <source src="/audio/PleaseDoNotSueMe.mp3" type="audio/mpeg" ></source>
+        </audio>
       </div>
     );
   }
