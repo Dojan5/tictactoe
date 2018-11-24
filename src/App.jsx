@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Board, Square } from './components';
+import Drawer from './components/drawer';
 
 class App extends Component {
   constructor() {
@@ -121,6 +122,7 @@ class App extends Component {
         <Board pose={isVisible ? 'visible' : 'hidden'}>
           {this.renderBoard()}
         </Board>
+        <Drawer pose={isVisible ? 'visible' : 'hidden'} />
         <audio ref={(fanfare) => { this.fanfare = fanfare }}>
           <source src="/audio/PleaseDoNotSueMe.mp3" type="audio/mpeg" ></source>
         </audio>
