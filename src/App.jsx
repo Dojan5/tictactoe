@@ -8,6 +8,7 @@ class App extends Component {
 
     this.handleClick = this.handleClick.bind(this);
     this.renderBoard = this.renderBoard.bind(this);
+    this.resetGame = this.resetGame.bind(this);
     this.state = {
       isVisible: false,
       Squares: Array(9).fill(null),
@@ -49,6 +50,7 @@ class App extends Component {
     this.setState({
       Squares: Array(9).fill(null),
       gameOver: null,
+      WinningPlayer: null,
     })
   }
 
@@ -110,6 +112,7 @@ class App extends Component {
     }
   }
 
+  //TODO - Function that allows selecting the first player
   setPlayer(player) {
     this.setState({ CurrentPlayer: player })
   }
@@ -118,11 +121,14 @@ class App extends Component {
     const { isVisible } = this.state;
 
     return (
-      <div className="App">
+      <div>
         <Board pose={isVisible ? 'visible' : 'hidden'}>
           {this.renderBoard()}
         </Board>
-        <Drawer pose={isVisible ? 'visible' : 'hidden'} />
+        <Drawer pose={isVisible ? 'visible' : 'hidden'}
+          resetGame={this.resetGame}
+          gameOver={this.state.gameOver}
+          winningPlayer={this.state.WinningPlayer} />
         <audio ref={(fanfare) => { this.fanfare = fanfare }}>
           <source src="/audio/PleaseDoNotSueMe.mp3" type="audio/mpeg" ></source>
         </audio>
