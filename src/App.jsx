@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Board, Square } from './components';
+import { Board, Square, MuteButton } from './components';
 import Drawer from './components/drawer';
 
 class App extends Component {
@@ -9,13 +9,15 @@ class App extends Component {
     this.handleClick = this.handleClick.bind(this);
     this.renderBoard = this.renderBoard.bind(this);
     this.resetGame = this.resetGame.bind(this);
+    this.toggleMute = this.toggleMute.bind(this);
     this.state = {
       isVisible: false,
       Squares: Array(9).fill(null),
       gameOver: null,
       isDraw: false,
       CurrentPlayer: "Magenta",
-      WinningPlayer: null
+      WinningPlayer: null,
+      Muted: false
     };
   }
 
@@ -24,6 +26,8 @@ class App extends Component {
   }
 
   toggleBoardVisibility = () => this.setState({ isVisible: !this.state.isVisible });
+
+  toggleMute = () => this.setState({ Muted: !this.state.Muted });
 
   //Renders the board
   renderBoard() {
@@ -55,7 +59,7 @@ class App extends Component {
   }
 
   checkForVictor() {
-    //Board configuration that results in a win
+    //Board configurations that result in a win
     const victoryConfiguration = [
       ['0', '1', '2'],
       ['3', '4', '5'],
@@ -91,7 +95,9 @@ class App extends Component {
       //Checks if the current board is a match towards the current victory config
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
         this.setState({ gameOver: true, WinningPlayer: squares[a] })
-        this.fanfare.play();
+        if (!this.state.Muted) {
+          this.fanfare.play();
+        }
       }
     }
   }
@@ -122,6 +128,8 @@ class App extends Component {
 
     return (
       <div>
+        <MuteButton muted={this.state.Muted}
+          toggleMute={this.toggleMute} />
         <Board pose={isVisible ? 'visible' : 'hidden'}>
           {this.renderBoard()}
         </Board>
