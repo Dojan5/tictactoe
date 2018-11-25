@@ -136,7 +136,8 @@ class App extends Component {
         <Drawer pose={isVisible ? 'visible' : 'hidden'}
           resetGame={this.resetGame}
           gameOver={this.state.gameOver}
-          winningPlayer={this.state.WinningPlayer} />
+          winningPlayer={this.state.WinningPlayer}
+          currentPlayer={this.state.CurrentPlayer} />
         <audio ref={(fanfare) => { this.fanfare = fanfare }}>
           <source src="/audio/PleaseDoNotSueMe.mp3" type="audio/mpeg" ></source>
         </audio>

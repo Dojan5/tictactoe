@@ -27,9 +27,9 @@ export const MuteButton = (props) => (
     <MButton>
         <div onClick={props.toggleMute}>
             {props.muted ? (
-                <i className="fas fa-volume-up"></i>
+                <i className="fas fa-volume-mute"></i>
             ) : (
-                    <i className="fas fa-volume-mute"></i>
+                    <i className="fas fa-volume-up"></i>
                 )}
 
         </div>
